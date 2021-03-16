@@ -1,19 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "./auth/login";
 import Register from "./auth/Register";
 
 export default function App() {
-  const resp = fetch("http://localhost:5000/api/isAuthenticated", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-        token:"token"
+  useEffect(()=>{
+    fetch("http://localhost:5000/api/isAuthenticated", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: "token",
+      }),
+    }).then(data=>{
+      console.log(data.json().then(data=>{
+        console.log(data);
+      }));
     })
   })
-  const myResp = await resp;
-  console.log(myResp);
   const [isAuthenticated, updateAuth] = useState(false);
   const [isLogined, updateLogin] = useState(false);
   return (
