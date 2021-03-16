@@ -13,16 +13,16 @@ export default function App() {
         token: "token",
       }),
     }).then(data=>{
-      console.log(data.json().then(data=>{
-        console.log(data);
-      }));
+      data.json().then(data=>{
+        updateLogin(data.isAuthenticated);
+      });
     })
   })
   const [isAuthenticated, updateAuth] = useState(false);
   const [isLogined, updateLogin] = useState(false);
   return (
     <section>
-      {isAuthenticated ? isLogined ? <App /> : <Login /> : <Register />}
+      {isLogined ? <App /> : <Login />}
     </section>
   );
 }
