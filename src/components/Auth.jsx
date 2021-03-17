@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { Endpoints } from "../Endpoints";
 import Login from "./auth/login";
 import Register from "./auth/Register";
 
 export default function App() {
   useEffect(()=>{
-    fetch("http://localhost:5000/api/isAuthenticated", {
+    fetch(`${Endpoints.host + Endpoints.isAuthenticated}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -17,12 +18,14 @@ export default function App() {
         updateLogin(data.isAuthenticated);
       });
     })
-  })
+  },[])
   const [isAuthenticated, updateAuth] = useState(false);
   const [isLogined, updateLogin] = useState(false);
+  function loginData(data) {
+  }
   return (
     <section>
-      {isLogined ? <App /> : <Login />}
+      {isLogined ? <Register /> : <Login loginData={loginData}/> }
     </section>
   );
 }
