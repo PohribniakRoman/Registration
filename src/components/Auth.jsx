@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Endpoints } from "../Endpoints";
 import Login from "./auth/login";
 import Register from "./auth/Register";
+import { BrowserRouter, Route } from "react-router-dom";
 
 export default function App() {
-  useEffect(()=>{
+  useEffect(() => {
     fetch(`${Endpoints.host + Endpoints.isAuthenticated}`, {
       method: "POST",
       headers: {
@@ -13,19 +14,26 @@ export default function App() {
       body: JSON.stringify({
         token: "token",
       }),
-    }).then(data=>{
-      data.json().then(data=>{
-        updateLogin(data.isAuthenticated);
+    }).then((data) => {
+      data.json().then((data) => {
+        updateAuth(data.isAuthenticated);
       });
-    })
-  },[])
+    });
+  }, []);
   const [isAuthenticated, updateAuth] = useState(false);
-  const [isLogined, updateLogin] = useState(false);
   function loginData(data) {
+    console.log(data);
   }
   return (
-    <section>
-      {isLogined ? <Register /> : <Login loginData={loginData}/> }
-    </section>
+    <BrowserRouter>
+      <section className="auth__wrapper">
+        <Route path="/login">
+          <Login loginData={loginData} />
+        </Route>
+        <Route path="/registrate">
+          <Register loginData={loginData} />
+        </Route>
+      </section>
+    </BrowserRouter>
   );
 }
