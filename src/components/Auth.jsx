@@ -3,6 +3,8 @@ import { Endpoints } from "../Endpoints";
 import Login from "./auth/login";
 import Register from "./auth/Register";
 import { BrowserRouter, Route } from "react-router-dom";
+import ProtectedRoute from "../hooks/ProtectedRoute";
+import Home from "./Home";
 
 export default function App() {
   useEffect(() => {
@@ -33,6 +35,7 @@ export default function App() {
         <Route path="/registrate">
           <Register loginData={loginData} />
         </Route>
+          <ProtectedRoute component={Home} isAuth={isAuthenticated} path="/home"/>
       </section>
     </BrowserRouter>
   );
