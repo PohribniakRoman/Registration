@@ -64,7 +64,7 @@ export default function Register({ loginData }) {
             name="password"
             required
           />
-          <input className="" type="submit" value="Login" />
+          <input className="" type="submit" value="Sign up" />
         </form>
         <div className="auth__change">
           Already have an account?

@@ -1,42 +1,34 @@
-import { useEffect, useState } from "react";
-import { Endpoints } from "../Endpoints";
 import Login from "./auth/login";
 import Register from "./auth/Register";
-import { BrowserRouter, Route } from "react-router-dom";
-import ProtectedRoute from "../hooks/ProtectedRoute";
-import Home from "./Home";
+import { Route, Redirect } from "react-router-dom";
+import { useState } from "react";
+import Cookies from 'universal-cookie';
 
-export default function App() {
-  useEffect(() => {
-    fetch(`${Endpoints.host + Endpoints.isAuthenticated}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: "token",
-      }),
-    }).then((data) => {
-      data.json().then((data) => {
-        updateAuth(data.isAuthenticated);
-      });
-    });
-  }, []);
-  const [isAuthenticated, updateAuth] = useState(false);
+export default function Auth({ updateStatus, ...rest }) {
+  const cookies = new Cookies();
   function loginData(data) {
-    console.log(data);
+    updateStatus(data);
+    let token = data.token.split("-q1w4/")
+    
+    cookies.set("user",token.join("-q1w4/"),{maxAge:token[1]})
+    
+    setStatus(data.isAuthenticated.isAuthenticated.isAuth);
   }
+  const [status, setStatus] = useState(rest.isAuthenticated);
   return (
-    <BrowserRouter>
-      <section className="auth__wrapper">
-        <Route path="/login">
-          <Login loginData={loginData} />
-        </Route>
-        <Route path="/registrate">
-          <Register loginData={loginData} />
-        </Route>
-          <ProtectedRoute component={Home} isAuth={isAuthenticated} path="/home"/>
-      </section>
-    </BrowserRouter>
+    <div>
+      {status ? (
+        <Redirect push to="/" />
+      ) : (
+        <section className="auth__wrapper">
+          <Route path="/login">
+            <Login loginData={loginData} />
+          </Route>
+          <Route path="/registrate">
+            <Register loginData={loginData} />
+          </Route>
+        </section>
+      )}
+    </div>
   );
 }
