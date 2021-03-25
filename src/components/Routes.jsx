@@ -4,6 +4,7 @@ import ProtectedRoute from "../hooks/ProtectedRoute";
 import Home from "./Home";
 import { useEffect, useState } from "react";
 import { Endpoints } from "../Endpoints";
+import SendData from "../hooks/SendData";
 
 function getCookie(name) {
   let matches = document.cookie.match(new RegExp(
@@ -14,15 +15,7 @@ function getCookie(name) {
 
 export default function Routes() {
   useEffect(() => {
-    fetch(`${Endpoints.host + Endpoints.isAuthenticated}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: getCookie("user")
-      }),
-    }).then((data) => {
+    SendData(`${Endpoints.host + Endpoints.isAuthenticated}`,{token:getCookie("user")}).then((data) => {
       data.json().then((data) => {
         console.log(data);
         updateAuth(data.isAuthenticated);
